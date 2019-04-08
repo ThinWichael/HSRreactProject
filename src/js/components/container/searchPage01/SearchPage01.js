@@ -13,7 +13,7 @@ export default class searchPage01 extends Component {
       departure_ID: "0990",
       destination_ID: "1070",
       HSRstationID: [],
-      HSR_result_Items: [],
+      HSR_result_items: [],
       error: ""
     };
 
@@ -95,7 +95,7 @@ export default class searchPage01 extends Component {
 
         console.log(data);
 
-        this.state.HSR_result_Items = data.map((data_) => {
+        this.state.HSR_result_items = data.map((data_) => {
             let timeCost = this.utils.timeMinusTime(data_['DestinationStopTime']['ArrivalTime'],
                                          data_['OriginStopTime']['DepartureTime']);
 
@@ -232,7 +232,7 @@ export default class searchPage01 extends Component {
               </tr>
             </thead>
             <tbody id="tableBody">
-              {state.HSR_result_Items}
+              {state.HSR_result_items}
               {/* <tr>
               <td>自強</td>
               <td>139</td>

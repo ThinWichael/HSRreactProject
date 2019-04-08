@@ -103,16 +103,16 @@ export default class searchPage02 extends Component {
             //過濾掉 不要的direction / 不含訖站的資料 / 標準與商務皆滿座的車廂
             //高鐵定義 北上的direction 是0
 
-            let table2_ = table2.filter((table2_ele) => {
+            let table2_ = table2.filter((ele) => {
               // let timeCost = this.utils.timeMinusTime(data_['DestinationStopTime']['ArrivalTime'],
               //                              data_['OriginStopTime']['DepartureTime']);
               let findDate = false;
 
-              if ((this.state.direction === 'n' && table2_ele['Direction'] === 1) ||
-                (this.state.direction === 's' && table2_ele['Direction'] === 0)) {
+              if ((this.state.direction === 'n' && ele['Direction'] === 1) ||
+                (this.state.direction === 's' && ele['Direction'] === 0)) {
 
 
-                table2_ele['StopStations'].forEach(ele => {
+                ele['StopStations'].forEach(ele => {
 
                   if (ele['StationID'] === this.state.destination_ID &&
                     (ele['BusinessSeatStatus'] === "Available" ||
@@ -133,45 +133,45 @@ export default class searchPage02 extends Component {
             // this.setState(this.state);
 
             // table1 filtered by TrainNo that doesnt show at table2_
-            let table1_ = table1.filter(table1_ele => {
+            let table1_ = table1.filter(ele1 => {
 
               let findTrainNo = false;
-              table2_.forEach(table2_ele => {
-                if (table2_ele['TrainNo'] === table1_ele['DailyTrainInfo']['TrainNo']) findTrainNo = true;
+              table2_.forEach(ele2 => {
+                if (ele2['TrainNo'] === ele1['DailyTrainInfo']['TrainNo']) findTrainNo = true;
               })
 
               return findTrainNo;
             })
 
             // 加入座位資訊於table1_
-            table1_.forEach(table1_ele => {
+            table1_.forEach(ele1 => {
 
-              const table2_ele = table2_.find(ele => {
-                return ele['TrainNo'] === table1_ele['DailyTrainInfo']['TrainNo'];
+              const table2_ele = table2_.find(ele2 => {
+                return ele2['TrainNo'] === ele1['DailyTrainInfo']['TrainNo'];
               })
 
               let tempAry = table2_ele['StopStations'].find(data => {
                    return data['StationID'] === this.state.destination_ID;
               })
               // 新增參數
-              table1_ele['DailyTrainInfo'].BusinessSeatStatus = tempAry['BusinessSeatStatus'];
-              table1_ele['DailyTrainInfo'].StandardSeatStatus = tempAry['StandardSeatStatus'];
+              ele1['DailyTrainInfo'].BusinessSeatStatus = tempAry['BusinessSeatStatus'];
+              ele1['DailyTrainInfo'].StandardSeatStatus = tempAry['StandardSeatStatus'];
             })
 
             // 產出 HTML
-            this.state.HSR_result_Items = table1_.map(table1_ele => {
+            this.state.HSR_result_Items = table1_.map(ele1 => {
 
-              let timeCost = this.utils.timeMinusTime(table1_ele['DestinationStopTime']['ArrivalTime'],
-              table1_ele['OriginStopTime']['DepartureTime']);
+              let timeCost = this.utils.timeMinusTime(ele1['DestinationStopTime']['ArrivalTime'],
+              ele1['OriginStopTime']['DepartureTime']);
               
               return (
-                <tr key={table1_ele['DailyTrainInfo']['TrainNo']}>
-                  <td>{table1_ele['DailyTrainInfo']['TrainNo']}</td>
-                  <td>{table1_ele['OriginStopTime']['DepartureTime']}</td>
-                  <td>{table1_ele['DestinationStopTime']['ArrivalTime']}</td>
+                <tr key={ele1['DailyTrainInfo']['TrainNo']}>
+                  <td>{ele1['DailyTrainInfo']['TrainNo']}</td>
+                  <td>{ele1['OriginStopTime']['DepartureTime']}</td>
+                  <td>{ele1['DestinationStopTime']['ArrivalTime']}</td>
                   <td>{timeCost}</td>
-                  <td>{table1_ele['DailyTrainInfo'].StandardSeatStatus}</td>
-                  <td>{table1_ele['DailyTrainInfo'].BusinessSeatStatus}</td>
+                  <td>{ele1['DailyTrainInfo'].StandardSeatStatus}</td>
+                  <td>{ele1['DailyTrainInfo'].BusinessSeatStatus}</td>
                 </tr>
               )
             })
